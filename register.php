@@ -36,9 +36,20 @@
             </div>
         </div>
     </div>
-
-
-
     <script src="function/validasi.js"></script>
+    <script>
+    window.onload = function() {
+    var successMessage = "<?= $success_message ?>";
+    var errorMessage = "<?= $error_message ?>";
+
+    if (successMessage) {
+        showPopup(successMessage, "success");
+    }
+
+    if (errorMessage) {
+        showPopup(errorMessage, "error");
+    }
+};
+    </script>
 </body>
 </html>

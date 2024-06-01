@@ -33,15 +33,3 @@ function showPopup(message, type) {
     }, 3000);
 }
 
-window.onload = function() {
-    var successMessage = "<?= $success_message ?>";
-    var errorMessage = "<?= $error_message ?>";
-
-    if (successMessage) {
-        showPopup(successMessage, "success");
-    }
-
-    if (errorMessage) {
-        showPopup(errorMessage, "error");
-    }
-};
