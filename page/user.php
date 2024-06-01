@@ -1,5 +1,5 @@
 <?php
- require_once('../function/helper.php');
+ require_once('function/helper.php');
 
  
  if ($_SESSION['role'] != 'user') {
