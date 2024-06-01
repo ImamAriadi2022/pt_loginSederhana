@@ -138,13 +138,10 @@ File `helper.php` berisi fungsi-fungsi yang berguna untuk proyek ini, seperti ko
 
 Jika Anda ingin berkontribusi pada proyek ini, silakan lakukan fork repository ini dan kirimkan pull request dengan perubahan Anda.
 
-## Lisensi
-
-Proyek ini dilisensikan di bawah MIT License. Lihat file [LICENSE](LICENSE) untuk informasi lebih lanjut.
 
 ## Kontak
 
-Untuk pertanyaan lebih lanjut, silakan hubungi [email@example.com].
+Untuk pertanyaan lebih lanjut, silakan hubungi [imamariadi775@gmail.com].
 ```
 
 Dokumentasi ini menyediakan panduan lengkap mulai dari instalasi hingga penggunaan, serta beberapa tips untuk penanganan kesalahan umum. Anda bisa menyesuaikan bagian-bagian tertentu sesuai dengan kebutuhan proyek Anda.
