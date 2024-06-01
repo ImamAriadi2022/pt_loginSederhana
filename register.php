@@ -1,9 +1,10 @@
 <?php
     require_once("function/helper.php");
     require_once("function/koneksi.php");
+
+    $error_message = isset($_GET['error']) ? $_GET['error'] : "";
+    $success_message = isset($_GET['success']) ? $_GET['success'] : "";
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,24 +13,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="<?= BASE_URL . 'assets/style01.css' ?>">
-    
 </head>
 <body>
     <div class="topbar">
         <h3 class="text-topbar">Halaman pendaftaran</h3>
     </div>
 
-
     <div class="content">
         <div class="card-login">
             <div class="card-main">
                 <div class="card-header">Form Pendaftaran</div>
                 <div class="card-body">
-                    <form method="POST" action="<?= BASE_URL . 'process/process_login.php' ?>">
+                    <form name="registerForm" method="POST" action="<?= BASE_URL . 'process/process_register.php' ?>" onsubmit="return validateForm()">
                     <label for="" class="form-label">Username</label><br>
-                    <input type="username" name="username" class="form-input"><br>
+                    <input type="text" name="username" class="form-input" required><br>
                     <label for="" class="form-label">Password</label><br>
-                    <input type="password" name="password" class="form-input"><br>
+                    <input type="password" name="password" class="form-input" required><br>
                     <button type="submit" name="daftar" class="btn-login">Daftar</button>
                     </form>
                 </div>
@@ -37,6 +36,9 @@
             </div>
         </div>
     </div>
+
+
+
+    <script src="function/validasi.js"></script>
 </body>
 </html>
-
