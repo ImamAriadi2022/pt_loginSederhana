@@ -1,147 +1,82 @@
-# pt_loginSederhana
-Imam Ariadi
-function
-documentation
-Berikut adalah contoh dokumentasi untuk README yang bisa digunakan untuk proyek multi-user Anda. Dokumen ini mencakup panduan pengaturan, penggunaan, dan penjelasan singkat tentang struktur proyek.
 
-```markdown
-# Multi-User Project
+## Dokumentasi Proyek pt_loginSederhana (dengan Multi-Role)
 
-Proyek ini adalah sebuah aplikasi web sederhana dengan fitur multi-user. Aplikasi ini memungkinkan pengguna untuk login dan mengakses halaman tertentu berdasarkan peran mereka.
+### Deskripsi Proyek
 
-## Struktur Direktori
+Proyek ini, `pt_loginSederhana`, adalah sebuah aplikasi login sederhana yang telah saya bangun menggunakan PHP, MySQL, (potensial) JavaScript, dan CSS. Aplikasi ini memungkinkan pengguna untuk:
 
-```
-multi-user-project/
-├── function/
-│   └── helper.php
-│   └── koneksi.php
-│   └── validasi_login.js
-│   └── validasi.js
-├── page/
-│   └── user.php
-│   └── admin.php
-├── process.php
-│   └── process_login.php
-│   └── process_logout.php
-│   └── process_register.php
-├── README.md
-├── index.php
-└── dashboard.php
-```
+1.  **Mendaftar:** Membuat akun baru dengan peran (role) sebagai admin atau user.
+2.  **Masuk (Login):** Mengakses akun dengan nama pengguna dan kata sandi yang benar.
+3.  **Dashboard:** Melihat halaman "dashboard" yang berbeda sesuai dengan peran pengguna.
+4.  **Keluar (Logout):** Mengakhiri sesi login.
 
-## Persyaratan
+### Fitur Utama
 
-- PHP 7.x atau lebih baru
-- Server web seperti Apache (disarankan menggunakan XAMPP untuk pengembangan lokal)
+1.  **Pendaftaran Pengguna (register.php):**
+    *   Mengumpulkan input nama pengguna, email, kata sandi, dan peran (admin/user).
+    *   Memvalidasi input (sebaiknya di sisi server dan klien).
+    *   Menghash kata sandi sebelum menyimpannya ke database untuk keamanan.
+    *   Menyimpan data pengguna baru, termasuk peran, ke database MySQL.
 
-## Instalasi
+2.  **Login Pengguna (index.php):**
+    *   Mengumpulkan input nama pengguna dan kata sandi.
+    *   Memvalidasi input.
+    *   Membandingkan kata sandi yang dimasukkan dengan hash yang tersimpan di database.
+    *   Jika cocok, memeriksa peran pengguna dan memulai sesi login.
+    *   Mengarahkan pengguna ke halaman dashboard yang sesuai dengan peran mereka (admin atau user).
 
-1. **Kloning Repository**:
-   ```sh
-   git clone https://github.com/username/multi-user-project.git
-   ```
-2. **Navigasi ke Direktori Proyek**:
-   ```sh
-   cd multi-user-project
-   ```
+3.  **Halaman Dashboard (dashboard.php & admin.php):**
+    *   **dashboard.php:** Halaman dashboard untuk pengguna biasa (user).
+    *   **admin.php:** Halaman dashboard khusus untuk admin, mungkin dengan fitur tambahan seperti manajemen pengguna.
+    *   Kedua halaman ini memeriksa apakah pengguna sudah login dan memiliki peran yang sesuai sebelum menampilkan konten.
 
-3. **Konfigurasi Database**:
-   Buat database dan tabel yang diperlukan. Anda bisa menggunakan `helper.php` untuk menyertakan fungsi koneksi database.
+4.  **Logout (logout.php):**
+    *   Menghancurkan sesi login.
+    *   Mengarahkan pengguna kembali ke halaman login.
 
-4. **Konfigurasi Server**:
-   Pastikan Anda mengarahkan root server web Anda ke direktori `multi-user-project`.
+### Struktur File dan Folder
 
-## Penggunaan
+*   `index.php`: Halaman utama (formulir login).
+*   `register.php`: Halaman pendaftaran.
+*   `dashboard.php`: Halaman dashboard untuk user.
+*   `admin.php`: Halaman dashboard untuk admin.
+*   `koneksi.php`: Konfigurasi koneksi database MySQL.
+*   `style.css`: Gaya CSS untuk tampilan aplikasi.
+*   `(Opsional) script.js`: Kode JavaScript untuk validasi input, efek visual, atau AJAX.
 
-### Halaman Login (index.php)
+### Implementasi Multi-Role
 
-File `index.php` digunakan untuk proses login pengguna. Jika login berhasil, username dan peran pengguna disimpan dalam session, dan pengguna diarahkan ke halaman user.
+*   **Database:** Saya menambahkan kolom `role` (misalnya ENUM('admin', 'user')) pada tabel pengguna di database.
+*   **Pendaftaran:** Saat pengguna mendaftar, peran yang mereka pilih akan disimpan ke dalam kolom `role`.
+*   **Login:** Setelah berhasil login, peran pengguna disimpan ke dalam variabel sesi (misalnya `$_SESSION['role']`).
+*   **Dashboard:** Pernyataan kondisional (misalnya `if ($_SESSION['role'] == 'admin')`) digunakan untuk menampilkan halaman dashboard yang sesuai dengan peran pengguna.
 
-**Contoh Kode**:
+### Contoh Kode (PHP)
+
 ```php
-<?php
-require_once('function/helper.php');
-session_start(); // Memulai sesi
+// index.php (cuplikan)
+if ($user && password_verify($password, $user["password"])) {
+    session_start();
+    $_SESSION["loggedin"] = true;
+    $_SESSION["username"] = $username;
+    $_SESSION["role"] = $user["role"]; // Simpan peran ke dalam sesi
 
-// Misalkan ini adalah proses login
-// Anda mungkin sudah memiliki proses validasi login di sini
-// Jika login berhasil, simpan username di session dan redirect ke halaman user
-
-$username = 'nama_pengguna'; // Gantilah 'nama_pengguna' dengan username yang sebenarnya
-$_SESSION['username'] = $username;
-$_SESSION['role'] = 'user'; // Setel role pengguna
-
-// Menyimpan username di local storage melalui JavaScript
-echo "<script>
-    localStorage.setItem('username', '$username');
-    window.location.href = '" . BASE_URL . "page/user.php';
-</script>";
-exit();
-?>
-```
-
-### Halaman User (user.php)
-
-File `user.php` digunakan untuk menampilkan halaman pengguna setelah login yang berhasil. File ini memeriksa session dan menampilkan pesan "Hallo [username]".
-
-**Contoh Kode**:
-```php
-<?php
-require_once('../function/helper.php'); // Pastikan jalur sudah benar
-
-// Cek apakah session sudah dimulai
-if (session_status() == PHP_SESSION_NONE) {
-    session_start(); // Mulai session jika belum dimulai
+    if ($_SESSION["role"] == "admin") {
+        header("location: admin.php");
+    } else {
+        header("location: dashboard.php");
+    }
+    exit;
 }
-
-// Cek apakah user memiliki role 'user'
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'user') {
-    header("Location: " . BASE_URL . 'dashboard-php?page-user');
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman User</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mengambil username dari local storage
-            const username = localStorage.getItem('username') || 'Guest';
-            document.getElementById('greeting').innerText = 'Hallo ' + username;
-        });
-    </script>
-</head>
-<body>
-    <div class="class">
-        <h1>halaman user</h1>
-        <div id="greeting">Hallo</div>
-    </div>
-</body>
-</html>
 ```
 
-### Helper Functions (function/helper.php)
+### Rekomendasi Peningkatan
 
-File `helper.php` berisi fungsi-fungsi yang berguna untuk proyek ini, seperti koneksi database dan fungsi lainnya yang sering digunakan.
+*   **Manajemen Pengguna (untuk Admin):**
+    *   Menambahkan fitur untuk admin agar dapat melihat, mengedit, atau menghapus pengguna lain.
+*   **Otorisasi:**
+    *   Implementasikan mekanisme otorisasi untuk membatasi akses ke fitur atau halaman tertentu berdasarkan peran pengguna.
 
-## Penanganan Kesalahan
+### Kesimpulan
 
-- Jika file `helper.php` tidak ditemukan, pastikan jalur yang digunakan sudah benar.
-- Jika session sudah dimulai, pastikan tidak ada pemanggilan `session_start()` yang berlebihan.
-
-## Kontribusi
-
-Jika Anda ingin berkontribusi pada proyek ini, silakan lakukan fork repository ini dan kirimkan pull request dengan perubahan Anda.
-
-
-## Kontak
-
-Untuk pertanyaan lebih lanjut, silakan hubungi [imamariadi775@gmail.com].
-```
-
-Dokumentasi ini menyediakan panduan lengkap mulai dari instalasi hingga penggunaan, serta beberapa tips untuk penanganan kesalahan umum. Anda bisa menyesuaikan bagian-bagian tertentu sesuai dengan kebutuhan proyek Anda.
+Proyek `pt_loginSederhana` ini adalah dasar yang baik untuk aplikasi login. Dengan peningkatan yang disarankan, aplikasi ini dapat menjadi lebih aman, fungsional, dan mudah digunakan.
