@@ -1,21 +1,19 @@
-
 <?php
-
 require_once("../function/helper.php");
 require_once("../function/koneksi.php");
 
+session_start();
 
-//menangkap request user
+// menangkap request user
 $username = $_POST['username'];
 $password = md5($_POST['password']);
 
 $query = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$username' AND password = '$password'");
 
-//mengecek pengguna
+// mengecek pengguna
 if (mysqli_num_rows($query) != 0) {
     $row = mysqli_fetch_array($query);
 
-    session_start();
     $_SESSION['id'] = $row['id'];
     $_SESSION['role'] = $row['role'];
     if ($row['role'] == 'admin') {
@@ -24,6 +22,8 @@ if (mysqli_num_rows($query) != 0) {
         header("location: " . BASE_URL . 'dashboard.php?page-user');
     }
 } else {
-    header("location: " . BASE_URL);
+    $_SESSION['error_message'] = "Username atau password salah!";
+    header("location: ../index.php");
+    exit;
 }
-
+?>
