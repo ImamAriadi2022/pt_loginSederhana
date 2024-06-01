@@ -1,6 +1,5 @@
-
 <?php
- require_once('function/helper.php');
+ require_once('../function/helper.php');
 
  
  if ($_SESSION['role'] != 'user') {
@@ -9,6 +8,7 @@
  }
 ?>
 
-<div class="class">
-    <h1>halaman user</h1>
+
+<div class="card">
+    <h1>halaman Pengguna</h1>
 </div>
